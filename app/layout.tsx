@@ -2,14 +2,14 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#020617",
+  themeColor: "#f8fafc",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
 };
 
 export const metadata: Metadata = {
-  title: "Vehicle Services Group — Outbound Call Script & Objection Handling Playbook",
+  title: "Vehicle Services Group — Outbound Call Script & Objection Playbook",
   description:
     "Interactive outbound call center agent cockpit for Vehicle Extended Warranty campaigns. Live dynamic script personalization, step-by-step objection handling, rebuttals matrix, and licensed Service Advisor transfer protocols.",
   keywords: [
@@ -48,11 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full scroll-smooth dark">
+    <html lang="en" className="h-full scroll-smooth">
       <head>
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-lime-500 selection:text-slate-950 font-sans">
+      <body className="min-h-full flex flex-col bg-slate-100 text-slate-900 antialiased selection:bg-lime-400 selection:text-slate-950 font-sans">
         {children}
       </body>
     </html>

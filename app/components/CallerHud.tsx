@@ -70,20 +70,20 @@ export const CallerHud: React.FC<CallerHudProps> = ({
       aria-label="Agent Call Controls and Personalization Hub"
       className="mx-auto w-full max-w-7xl px-4 pt-4 sm:px-6 lg:px-8"
     >
-      <div className="rounded-2xl border border-slate-800 bg-gradient-to-b from-slate-900/90 to-slate-950/90 p-4 shadow-xl backdrop-blur-md transition-all">
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm transition-all">
         {/* Top Control Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3.5">
           {/* Live Call Timer & Status */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 rounded-xl bg-slate-950/80 px-3 py-1.5 border border-slate-800">
+            <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-1.5 border border-slate-300">
               <span
                 className={`h-2.5 w-2.5 rounded-full ${
                   timerRunning
-                    ? "bg-lime-400 animate-pulse shadow-sm shadow-lime-400"
-                    : "bg-slate-600"
+                    ? "bg-lime-500 animate-pulse shadow-xs shadow-lime-500"
+                    : "bg-slate-400"
                 }`}
               />
-              <span className="font-mono text-sm font-bold text-white tracking-wider">
+              <span className="font-mono text-sm font-bold text-slate-800 tracking-wider">
                 {formatTime(seconds)}
               </span>
             </div>
@@ -93,8 +93,8 @@ export const CallerHud: React.FC<CallerHudProps> = ({
                 onClick={() => setTimerRunning(!timerRunning)}
                 className={`flex h-8 w-8 items-center justify-center rounded-lg border text-xs transition-all ${
                   timerRunning
-                    ? "border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20"
-                    : "border-lime-500/40 bg-lime-500/10 text-lime-400 hover:bg-lime-500/20"
+                    ? "border-amber-400 bg-amber-50 text-amber-700 hover:bg-amber-100"
+                    : "border-lime-500 bg-lime-50 text-lime-800 hover:bg-lime-100"
                 }`}
                 title={timerRunning ? "Pause Call Timer" : "Start Call Timer"}
                 aria-label={timerRunning ? "Pause Timer" : "Start Timer"}
@@ -103,7 +103,7 @@ export const CallerHud: React.FC<CallerHudProps> = ({
               </button>
               <button
                 onClick={handleResetTimer}
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-800/60 text-slate-400 hover:bg-slate-700 hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-300 bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 title="Reset Call Timer"
                 aria-label="Reset Timer"
               >
@@ -112,12 +112,12 @@ export const CallerHud: React.FC<CallerHudProps> = ({
             </div>
 
             {/* Quick Disposition selector */}
-            <div className="hidden sm:flex items-center gap-1.5 pl-2 border-l border-slate-800">
-              <span className="text-xs text-slate-400 font-medium">Outcome:</span>
+            <div className="hidden sm:flex items-center gap-1.5 pl-2 border-l border-slate-200">
+              <span className="text-xs text-slate-500 font-semibold">Outcome:</span>
               <select
                 value={disposition}
                 onChange={(e) => setDisposition(e.target.value)}
-                className="rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs font-semibold text-lime-300 focus:border-lime-400 focus:outline-none"
+                className="rounded-lg border border-slate-300 bg-white px-2.5 py-1 text-xs font-bold text-slate-800 focus:border-lime-500 focus:outline-none"
               >
                 <option value="In Call">🟢 Active Call</option>
                 <option value="Transferred">⭐ Warm Transfer to Advisor</option>
@@ -135,12 +135,12 @@ export const CallerHud: React.FC<CallerHudProps> = ({
               onClick={() => onTogglePersonalized(!isPersonalized)}
               className={`flex items-center gap-2 rounded-xl px-3 py-1.5 text-xs font-bold transition-all border ${
                 isPersonalized
-                  ? "border-lime-400/50 bg-lime-500/20 text-lime-300 shadow-sm shadow-lime-500/20"
-                  : "border-slate-700 bg-slate-800/80 text-slate-300 hover:border-slate-600 hover:text-white"
+                  ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                  : "border-slate-300 bg-slate-50 text-slate-700 hover:bg-slate-100"
               }`}
               title="Toggle between real lead data vs raw script placeholders"
             >
-              <Sparkles className="h-3.5 w-3.5 text-lime-400" />
+              <Sparkles className="h-3.5 w-3.5" />
               <span>
                 {isPersonalized ? "Live Lead Mode: Active" : "Script Template Mode"}
               </span>
@@ -148,17 +148,17 @@ export const CallerHud: React.FC<CallerHudProps> = ({
 
             <button
               onClick={onCopyFullScript}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-bold text-slate-200 transition-all hover:border-lime-500/40 hover:bg-slate-700 hover:text-white"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50 shadow-2xs"
               title="Copy Entire Opening Script to Clipboard"
             >
               {fullScriptCopied ? (
                 <>
-                  <Check className="h-3.5 w-3.5 text-lime-400" />
-                  <span className="text-lime-300">Copied!</span>
+                  <Check className="h-3.5 w-3.5 text-lime-600" />
+                  <span className="text-lime-700 font-extrabold">Copied!</span>
                 </>
               ) : (
                 <>
-                  <Copy className="h-3.5 w-3.5 text-slate-300" />
+                  <Copy className="h-3.5 w-3.5 text-slate-600" />
                   <span>Copy Script</span>
                 </>
               )}
@@ -166,7 +166,7 @@ export const CallerHud: React.FC<CallerHudProps> = ({
 
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-800/60 text-slate-300 hover:bg-slate-700 hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-300 bg-slate-50 text-slate-600 hover:bg-slate-100"
               title={isExpanded ? "Collapse Lead Inputs" : "Expand Lead Inputs"}
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
@@ -176,22 +176,22 @@ export const CallerHud: React.FC<CallerHudProps> = ({
 
         {/* Expandable Lead Fields Inputs */}
         {isExpanded && (
-          <div className="mt-3.5 pt-1 animate-fadeIn">
+          <div className="mt-3.5 pt-1">
             <div className="mb-2 flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Settings2 className="h-3.5 w-3.5 text-lime-400" />
-                Live Lead Dynamic Replacer (Instantly updates script & objection lines)
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Settings2 className="h-3.5 w-3.5 text-lime-600" />
+                Live Lead Dynamic Replacer (Instantly personalizes script &amp; responses)
               </span>
-              <span className="text-[11px] text-slate-500">
+              <span className="text-[11px] text-slate-400 hidden sm:inline">
                 Values auto-inject into highlighted fields
               </span>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {/* Client Name */}
               <div className="relative">
-                <label className="mb-1 flex items-center gap-1 text-[11px] font-semibold text-slate-300">
-                  <User className="h-3 w-3 text-lime-400" />
+                <label className="mb-1 flex items-center gap-1 text-[11px] font-bold text-slate-700">
+                  <User className="h-3 w-3 text-lime-600" />
                   (client&apos;s name)
                 </label>
                 <input
@@ -201,14 +201,14 @@ export const CallerHud: React.FC<CallerHudProps> = ({
                     onVariablesChange({ ...variables, clientName: e.target.value })
                   }
                   placeholder="e.g. Robert Smith"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-1.5 text-xs font-medium text-white placeholder-slate-500 transition-colors focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400"
+                  className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-900 placeholder-slate-400 transition-colors focus:border-lime-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-lime-500"
                 />
               </div>
 
               {/* Your Name */}
               <div className="relative">
-                <label className="mb-1 flex items-center gap-1 text-[11px] font-semibold text-slate-300">
-                  <UserCheck className="h-3 w-3 text-lime-400" />
+                <label className="mb-1 flex items-center gap-1 text-[11px] font-bold text-slate-700">
+                  <UserCheck className="h-3 w-3 text-lime-600" />
                   (your name)
                 </label>
                 <input
@@ -218,14 +218,14 @@ export const CallerHud: React.FC<CallerHudProps> = ({
                     onVariablesChange({ ...variables, agentName: e.target.value })
                   }
                   placeholder="e.g. Alex"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-1.5 text-xs font-medium text-white placeholder-slate-500 transition-colors focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400"
+                  className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-900 placeholder-slate-400 transition-colors focus:border-lime-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-lime-500"
                 />
               </div>
 
               {/* Month, Year */}
               <div className="relative">
-                <label className="mb-1 flex items-center gap-1 text-[11px] font-semibold text-slate-300">
-                  <Calendar className="h-3 w-3 text-lime-400" />
+                <label className="mb-1 flex items-center gap-1 text-[11px] font-bold text-slate-700">
+                  <Calendar className="h-3 w-3 text-lime-600" />
                   (month, year)
                 </label>
                 <input
@@ -235,14 +235,14 @@ export const CallerHud: React.FC<CallerHudProps> = ({
                     onVariablesChange({ ...variables, monthYear: e.target.value })
                   }
                   placeholder="e.g. October 2022"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-1.5 text-xs font-medium text-white placeholder-slate-500 transition-colors focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400"
+                  className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-900 placeholder-slate-400 transition-colors focus:border-lime-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-lime-500"
                 />
               </div>
 
               {/* Payment Amount */}
               <div className="relative">
-                <label className="mb-1 flex items-center gap-1 text-[11px] font-semibold text-slate-300">
-                  <DollarSign className="h-3 w-3 text-lime-400" />
+                <label className="mb-1 flex items-center gap-1 text-[11px] font-bold text-slate-700">
+                  <DollarSign className="h-3 w-3 text-lime-600" />
                   (payment amount)
                 </label>
                 <input
@@ -255,7 +255,7 @@ export const CallerHud: React.FC<CallerHudProps> = ({
                     })
                   }
                   placeholder="e.g. $420"
-                  className="w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3 py-1.5 text-xs font-medium text-white placeholder-slate-500 transition-colors focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400"
+                  className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-900 placeholder-slate-400 transition-colors focus:border-lime-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-lime-500"
                 />
               </div>
             </div>

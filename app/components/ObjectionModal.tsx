@@ -10,7 +10,6 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   Zap,
   Info,
 } from "lucide-react";
@@ -40,7 +39,6 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
   if (!objection) return null;
 
   const handleCopyText = (text: string, responseId: number) => {
-    // Replace variables in text if personalized
     let formattedText = text;
     if (isPersonalized) {
       formattedText = formattedText
@@ -70,8 +68,8 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             key={idx}
             className={`font-bold ${
               isPersonalized
-                ? "bg-lime-400/20 text-lime-300 px-1 rounded border border-lime-400/40"
-                : "text-amber-400 font-semibold"
+                ? "bg-lime-100 text-lime-900 px-1 rounded border border-lime-300"
+                : "text-amber-700 font-semibold underline decoration-amber-400"
             }`}
           >
             {isPersonalized ? variables.monthYear || "(month, year)" : "(month, year)"}
@@ -84,8 +82,8 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             key={idx}
             className={`font-bold ${
               isPersonalized
-                ? "bg-lime-400/20 text-lime-300 px-1 rounded border border-lime-400/40"
-                : "text-amber-400 font-semibold"
+                ? "bg-lime-100 text-lime-900 px-1 rounded border border-lime-300"
+                : "text-amber-700 font-semibold underline decoration-amber-400"
             }`}
           >
             {isPersonalized ? variables.paymentAmount || "(payment amount)" : "(payment amount)"}
@@ -98,8 +96,8 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             key={idx}
             className={`font-bold ${
               isPersonalized
-                ? "bg-lime-400/20 text-lime-300 px-1 rounded border border-lime-400/40"
-                : "text-amber-400 font-semibold"
+                ? "bg-lime-100 text-lime-900 px-1 rounded border border-lime-300"
+                : "text-amber-700 font-semibold underline decoration-amber-400"
             }`}
           >
             {isPersonalized ? variables.clientName || "(client's name)" : "(client's name)"}
@@ -112,8 +110,8 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             key={idx}
             className={`font-bold ${
               isPersonalized
-                ? "bg-lime-400/20 text-lime-300 px-1 rounded border border-lime-400/40"
-                : "text-amber-400 font-semibold"
+                ? "bg-lime-100 text-lime-900 px-1 rounded border border-lime-300"
+                : "text-amber-700 font-semibold underline decoration-amber-400"
             }`}
           >
             {isPersonalized ? variables.agentName || "(your name)" : "(your name)"}
@@ -129,31 +127,30 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="objection-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-950/80 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-xs animate-fadeIn"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl rounded-3xl border-2 border-slate-700 bg-slate-900 shadow-2xl overflow-hidden my-auto"
+        className="relative w-full max-w-5xl rounded-3xl border-2 border-slate-300 bg-white shadow-2xl overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Halftone green dot texture in the top right / bottom right background */}
-        <div className="halftone-bg pointer-events-none absolute right-0 top-0 h-64 w-64 opacity-25" />
-        <div className="halftone-bg pointer-events-none absolute right-0 bottom-0 h-48 w-48 opacity-30" />
+        {/* Halftone green dot texture in bottom right corner just like the training card */}
+        <div className="halftone-bg pointer-events-none absolute right-0 bottom-0 h-48 w-48 opacity-40" />
 
-        {/* Top Brush Style Header - Faithfully modeled after the original training cards */}
+        {/* Top Brush Style Header - EXACT MATCH to Image 2, 3, 4, 5 */}
         <div className="relative bg-zinc-950 border-b-4 border-lime-500 px-4 py-4 sm:px-8 sm:py-5 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Big Green Badge */}
-            <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-lime-400 to-lime-500 font-black text-slate-950 text-2xl sm:text-3xl shadow-lg shadow-lime-500/25 shrink-0 transform -rotate-1">
+            <div className="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-lime-500 font-black text-slate-950 text-2xl sm:text-3xl shadow-md shrink-0">
               {objection.number}
             </div>
 
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-lime-400">
-                  {objection.isCore ? "⭐ Official Campaign Card" : "Supplemental Objection Guide"}
+                  {objection.isCore ? "⭐ Official Campaign Battlecard" : "Supplemental Objection Guide"}
                 </span>
-                <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] font-semibold text-slate-300">
+                <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-300">
                   Card {currentIndex + 1} of {totalCount}
                 </span>
               </div>
@@ -170,7 +167,7 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             {/* Quick Cycle Prev / Next */}
             <button
               onClick={() => onSelectIndex((currentIndex - 1 + totalCount) % totalCount)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 text-slate-200 hover:border-lime-400 hover:bg-slate-700 hover:text-white transition-all"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 hover:border-lime-400 hover:bg-zinc-700 hover:text-white transition-all"
               title="Previous Objection (Left Arrow)"
               aria-label="Previous Objection"
             >
@@ -178,7 +175,7 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             </button>
             <button
               onClick={() => onSelectIndex((currentIndex + 1) % totalCount)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700 bg-slate-800 text-slate-200 hover:border-lime-400 hover:bg-slate-700 hover:text-white transition-all"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 hover:border-lime-400 hover:bg-zinc-700 hover:text-white transition-all"
               title="Next Objection (Right Arrow)"
               aria-label="Next Objection"
             >
@@ -186,7 +183,7 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             </button>
             <button
               onClick={onClose}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-700 bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-white transition-all ml-1"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-700 bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-white transition-all ml-1"
               title="Close modal (Esc)"
               aria-label="Close"
             >
@@ -195,23 +192,23 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
           </div>
         </div>
 
-        {/* Content Body: 2 Column Layout replicating image design */}
-        <div className="relative z-10 grid grid-cols-1 gap-6 p-5 sm:p-8 lg:grid-cols-12 max-h-[75vh] overflow-y-auto">
+        {/* Content Body: 2 Column Layout replicating image design in clean Light Theme */}
+        <div className="relative z-10 grid grid-cols-1 gap-6 p-5 sm:p-8 lg:grid-cols-12 max-h-[75vh] overflow-y-auto bg-white">
           {/* Left Column: GOAL & OPENING TACTIC (lg:col-span-5) */}
-          <div className="space-y-6 lg:col-span-5 lg:border-r lg:border-slate-800 lg:pr-6">
+          <div className="space-y-6 lg:col-span-5 lg:border-r lg:border-slate-200 lg:pr-6">
             {/* GOAL Box */}
-            <div className="rounded-2xl border-2 border-lime-500/30 bg-slate-950/70 p-5 shadow-md">
-              <div className="flex items-center gap-2 text-lime-400 mb-2">
+            <div className="rounded-2xl border-2 border-lime-400 bg-lime-50/50 p-5 shadow-xs">
+              <div className="flex items-center gap-2 text-lime-700 mb-2">
                 <Target className="h-6 w-6 stroke-[2.5]" />
-                <span className="text-sm font-black uppercase tracking-wider text-lime-400">
+                <span className="text-base font-black uppercase tracking-wider text-lime-800">
                   GOAL:
                 </span>
               </div>
-              <p className="text-base sm:text-lg font-bold text-white leading-snug">
+              <p className="text-base sm:text-lg font-black text-slate-900 leading-snug">
                 {objection.goal}
               </p>
               {objection.goalSubtext && (
-                <p className="mt-2 text-xs sm:text-sm font-semibold text-lime-300">
+                <p className="mt-2 text-xs sm:text-sm font-bold text-lime-800">
                   {objection.goalSubtext}
                 </p>
               )}
@@ -219,26 +216,26 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
 
             {/* OPENING TACTIC (if present) */}
             {objection.openingTactics && objection.openingTactics.length > 0 && (
-              <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 shadow-md">
-                <div className="flex items-center gap-2 text-lime-400 mb-3">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-xs">
+                <div className="flex items-center gap-2 text-lime-700 mb-3">
                   <HelpCircle className="h-5 w-5 stroke-[2.5]" />
-                  <span className="text-xs font-black uppercase tracking-wider text-lime-400">
+                  <span className="text-sm font-black uppercase tracking-wider text-lime-800">
                     OPENING TACTIC:
                   </span>
                 </div>
                 <ul className="space-y-2.5">
                   {objection.openingTactics.map((tactic, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-sm sm:text-base font-medium text-slate-200">
-                      <span className="text-lime-400 text-lg leading-none font-bold select-none">•</span>
+                    <li key={idx} className="flex items-start gap-2.5 text-sm sm:text-base font-medium text-slate-800">
+                      <span className="text-lime-600 text-lg leading-none font-bold select-none">•</span>
                       <span>{tactic}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* The Green Brush Callout Banner */}
+                {/* The Green Brush Callout Banner matching image */}
                 {objection.tacticBanner && (
-                  <div className="mt-4 rounded-xl bg-gradient-to-r from-lime-500 to-lime-600 p-3 text-slate-950 shadow-md">
-                    <p className="text-xs font-black uppercase tracking-wide leading-tight flex items-center gap-1.5">
+                  <div className="mt-4 rounded-xl bg-lime-500 p-3.5 text-slate-950 shadow-sm">
+                    <p className="text-xs sm:text-sm font-black uppercase tracking-wide leading-tight flex items-center gap-1.5">
                       <Zap className="h-4 w-4 fill-current shrink-0" />
                       <span>{objection.tacticBanner}</span>
                     </p>
@@ -249,9 +246,9 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
 
             {/* Pro Coaching Tips */}
             {objection.proTip && (
-              <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-4 text-xs text-slate-300">
-                <div className="flex items-center gap-1.5 font-bold text-amber-400 mb-1">
-                  <Info className="h-4 w-4" />
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700">
+                <div className="flex items-center gap-1.5 font-bold text-amber-700 mb-1">
+                  <Info className="h-4 w-4 text-amber-600" />
                   <span>Agent Delivery Coaching:</span>
                 </div>
                 <p className="leading-relaxed">{objection.proTip}</p>
@@ -261,15 +258,15 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
 
           {/* Right Column: RESPONSES (lg:col-span-7) */}
           <div className="space-y-4 lg:col-span-7">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <div className="flex items-center gap-2 text-lime-400">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+              <div className="flex items-center gap-2 text-lime-700">
                 <MessageSquare className="h-5 w-5 stroke-[2.5]" />
-                <span className="text-sm font-black uppercase tracking-wider text-lime-400">
+                <span className="text-base font-black uppercase tracking-wider text-lime-800">
                   RESPONSES:
                 </span>
               </div>
-              <span className="text-xs text-slate-400">
-                Click any copy button to paste verbatim into your chat/notes
+              <span className="text-xs text-slate-500 font-medium">
+                Click copy button to paste verbatim into your chat/notes
               </span>
             </div>
 
@@ -279,21 +276,21 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
                 return (
                   <article
                     key={resp.id}
-                    className="group relative rounded-2xl border-2 border-slate-800 bg-slate-950/80 p-5 transition-all hover:border-lime-500/50 hover:bg-slate-950 shadow-md"
+                    className="group relative rounded-2xl border-2 border-slate-200 bg-slate-50/80 p-5 transition-all hover:border-lime-500 hover:bg-white shadow-xs"
                   >
                     <div className="flex items-start gap-4">
-                      {/* Number circle badge */}
-                      <span className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-lime-500 text-slate-950 font-black text-base sm:text-lg shadow-md shadow-lime-500/20">
+                      {/* Number circle badge in lime green just like in the images */}
+                      <span className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-lime-500 text-slate-950 font-black text-base sm:text-lg shadow-sm">
                         {resp.id}
                       </span>
 
                       <div className="flex-1 space-y-2">
                         {resp.contextNote && (
-                          <div className="text-xs font-semibold text-lime-400/90 italic">
+                          <div className="text-xs font-bold text-lime-800 italic">
                             [{renderPersonalizedText(resp.contextNote)}]
                           </div>
                         )}
-                        <p className="text-base sm:text-lg font-medium leading-relaxed text-slate-100">
+                        <p className="text-base sm:text-lg font-medium leading-relaxed text-slate-800">
                           {renderPersonalizedText(resp.text)}
                         </p>
                       </div>
@@ -302,14 +299,14 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
                         onClick={() => handleCopyText(resp.text, resp.id)}
                         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-all ${
                           isCopied
-                            ? "border-lime-400 bg-lime-500/20 text-lime-300"
-                            : "border-slate-700 bg-slate-800 text-slate-300 hover:border-lime-400 hover:text-white"
+                            ? "border-lime-500 bg-lime-100 text-lime-800"
+                            : "border-slate-300 bg-white text-slate-600 hover:border-lime-500 hover:text-slate-900 shadow-2xs"
                         }`}
                         title="Copy this response"
                         aria-label="Copy response"
                       >
                         {isCopied ? (
-                          <Check className="h-4 w-4 text-lime-400" />
+                          <Check className="h-4 w-4 text-lime-600" />
                         ) : (
                           <Copy className="h-4 w-4" />
                         )}
@@ -323,14 +320,14 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
         </div>
 
         {/* Modal Footer Controls */}
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 bg-slate-950 px-6 py-4">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <kbd className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-300 border border-slate-700">
+        <div className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
+          <div className="flex items-center gap-2 text-xs text-slate-600">
+            <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-[10px] text-slate-800 border border-slate-300 shadow-2xs">
               Esc
             </kbd>
             <span>to close</span>
             <span className="mx-1">•</span>
-            <kbd className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[10px] text-slate-300 border border-slate-700">
+            <kbd className="rounded bg-white px-1.5 py-0.5 font-mono text-[10px] text-slate-800 border border-slate-300 shadow-2xs">
               ← / →
             </kbd>
             <span>to navigate</span>
@@ -339,7 +336,7 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 hover:text-white transition-all"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-all shadow-2xs"
             >
               Back to Overview
             </button>

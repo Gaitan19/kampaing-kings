@@ -4,17 +4,14 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Zap,
   Search,
-  Filter,
   Layers,
   Sparkles,
   HelpCircle,
   X,
   Keyboard,
-  ShieldCheck,
 } from "lucide-react";
 import {
   ALL_OBJECTIONS,
-  CORE_OBJECTIONS,
   ObjectionItem,
   ScriptVariables,
 } from "../data/scriptData";
@@ -119,33 +116,33 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
       className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
     >
       {/* Section Header */}
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-800 pb-5">
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-lime-500/20 text-lime-400">
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-lime-100 text-lime-700">
               <Zap className="h-4 w-4" />
             </span>
-            <span className="text-xs font-black uppercase tracking-widest text-lime-400">
+            <span className="text-xs font-black uppercase tracking-widest text-lime-700">
               Interactive Battlecard Matrix
             </span>
           </div>
-          <h2 className="mt-1 text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
-            Objections &amp; <span className="text-lime-400">Rebuttals</span>
+          <h2 className="mt-1 text-3xl sm:text-4xl font-black uppercase tracking-tight text-slate-900">
+            Objections &amp; <span className="text-lime-600">Rebuttals</span>
           </h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Select any objection below to view the verified call-center opening tactic, goal, and step-by-step responses.
+          <p className="mt-1 text-sm text-slate-600">
+            Select any objection card to view the exact opening tactic, goal, and verified responses.
           </p>
         </div>
 
         {/* Keyboard shortcut helper pill */}
-        <div className="hidden lg:flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/80 px-3.5 py-1.5 text-xs text-slate-400">
-          <Keyboard className="h-4 w-4 text-lime-400" />
+        <div className="hidden lg:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs text-slate-600 shadow-2xs">
+          <Keyboard className="h-4 w-4 text-lime-600" />
           <span>Press</span>
-          <kbd className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-300 border border-slate-700">
+          <kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-800 border border-slate-300">
             1-4
           </kbd>
           <span>for instant card popup,</span>
-          <kbd className="rounded bg-slate-800 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-300 border border-slate-700">
+          <kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-800 border border-slate-300">
             /
           </kbd>
           <span>to search</span>
@@ -160,8 +157,8 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             onClick={() => setActiveTab("core")}
             className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${
               activeTab === "core"
-                ? "border-lime-400 bg-lime-500 text-slate-950 shadow-md shadow-lime-500/20"
-                : "border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-700 hover:text-white"
+                ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
             }`}
           >
             <Sparkles className="h-3.5 w-3.5" />
@@ -172,8 +169,8 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             onClick={() => setActiveTab("all")}
             className={`flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition-all border ${
               activeTab === "all"
-                ? "border-lime-400 bg-lime-500 text-slate-950 shadow-md shadow-lime-500/20"
-                : "border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-700 hover:text-white"
+                ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
             }`}
           >
             <Layers className="h-3.5 w-3.5" />
@@ -184,8 +181,8 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             onClick={() => setActiveTab("interest")}
             className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all border ${
               activeTab === "interest"
-                ? "border-lime-400 bg-lime-500 text-slate-950"
-                : "border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
             }`}
           >
             Interest &amp; Time
@@ -195,8 +192,8 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             onClick={() => setActiveTab("trust")}
             className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all border ${
               activeTab === "trust"
-                ? "border-lime-400 bg-lime-500 text-slate-950"
-                : "border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
             }`}
           >
             Trust &amp; Privacy
@@ -206,8 +203,8 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             onClick={() => setActiveTab("vehicle")}
             className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-all border ${
               activeTab === "vehicle"
-                ? "border-lime-400 bg-lime-500 text-slate-950"
-                : "border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                ? "border-lime-500 bg-lime-500 text-slate-950 shadow-xs"
+                : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
             }`}
           >
             Vehicle &amp; Rates
@@ -223,12 +220,12 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search rebuttal keyword... (/)"
-            className="w-full rounded-xl border border-slate-700 bg-slate-900/90 pl-9 pr-8 py-2 text-xs font-medium text-white placeholder-slate-500 transition-colors focus:border-lime-400 focus:outline-none focus:ring-1 focus:ring-lime-400"
+            className="w-full rounded-xl border border-slate-300 bg-white pl-9 pr-8 py-2 text-xs font-semibold text-slate-900 placeholder-slate-400 transition-colors focus:border-lime-500 focus:outline-none focus:ring-1 focus:ring-lime-500 shadow-2xs"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery("")}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -238,7 +235,7 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
 
       {/* Grid of Objection Cards */}
       {filteredObjections.length > 0 ? (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           {filteredObjections.map((item, idx) => (
             <ObjectionCard
               key={item.id}
@@ -249,10 +246,10 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed border-slate-800 bg-slate-900/40 p-12 text-center">
-          <HelpCircle className="mx-auto h-10 w-10 text-slate-500 mb-3" />
-          <h3 className="text-lg font-bold text-white">No matching objections found</h3>
-          <p className="mt-1 text-xs text-slate-400">
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-xs">
+          <HelpCircle className="mx-auto h-10 w-10 text-slate-400 mb-3" />
+          <h3 className="text-lg font-bold text-slate-800">No matching objections found</h3>
+          <p className="mt-1 text-xs text-slate-500">
             Try searching for words like &quot;cost&quot;, &quot;receptionist&quot;, &quot;registration&quot;, or reset your filters.
           </p>
           <button
