@@ -8,7 +8,7 @@ import {
   MessageSquare,
   HelpCircle,
 } from "lucide-react";
-import { ObjectionItem } from "../data/scriptData";
+import { ObjectionItem } from "../data/objectionsData";
 
 interface ObjectionCardProps {
   objection: ObjectionItem;

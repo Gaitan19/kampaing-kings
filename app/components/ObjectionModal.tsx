@@ -12,8 +12,10 @@ import {
   ChevronRight,
   Zap,
   Info,
+  PhoneCall,
 } from "lucide-react";
-import { ObjectionItem, ScriptVariables } from "../data/scriptData";
+import { ObjectionItem } from "../data/objectionsData";
+import { ScriptVariables } from "../data/scriptData";
 
 interface ObjectionModalProps {
   objection: ObjectionItem | null;
@@ -23,6 +25,7 @@ interface ObjectionModalProps {
   totalCount: number;
   variables: ScriptVariables;
   isPersonalized: boolean;
+  onJumpToScript?: () => void;
 }
 
 export const ObjectionModal: React.FC<ObjectionModalProps> = ({
@@ -33,8 +36,21 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
   totalCount,
   variables,
   isPersonalized,
+  onJumpToScript,
 }) => {
   const [copiedResponseId, setCopiedResponseId] = useState<number | null>(null);
+
+  const handleReturnToScript = () => {
+    onClose();
+    setTimeout(() => {
+      if (onJumpToScript) {
+        onJumpToScript();
+      } else {
+        const el = document.getElementById("opening-script-section");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 50);
+  };
 
   if (!objection) return null;
 
@@ -164,6 +180,16 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
+            {/* Return to Opening Script Header Button */}
+            <button
+              onClick={handleReturnToScript}
+              className="hidden sm:flex items-center gap-1.5 rounded-xl border border-red-500/40 bg-red-500/20 px-3 py-1.5 text-xs font-bold text-red-200 hover:bg-red-500 hover:text-white transition-all mr-1"
+              title="Return to Opening Script"
+            >
+              <PhoneCall className="h-3.5 w-3.5" />
+              <span>Opening Script</span>
+            </button>
+
             {/* Quick Cycle Prev / Next */}
             <button
               onClick={() => onSelectIndex((currentIndex - 1 + totalCount) % totalCount)}
@@ -333,7 +359,16 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             <span>to navigate</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <button
+              onClick={handleReturnToScript}
+              className="flex items-center gap-1.5 rounded-xl border border-red-300 bg-red-50 px-4 py-2 text-xs font-bold text-red-700 hover:border-red-400 hover:bg-red-100 hover:text-red-800 transition-all shadow-2xs"
+              title="Return to Opening Script"
+            >
+              <PhoneCall className="h-3.5 w-3.5 text-red-600" />
+              <span>Back to Opening Script</span>
+            </button>
+
             <button
               onClick={onClose}
               className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-all shadow-2xs"

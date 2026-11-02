@@ -13,19 +13,21 @@ import {
 import {
   ALL_OBJECTIONS,
   ObjectionItem,
-  ScriptVariables,
-} from "../data/scriptData";
+} from "../data/objectionsData";
+import { ScriptVariables } from "../data/scriptData";
 import { ObjectionCard } from "./ObjectionCard";
 import { ObjectionModal } from "./ObjectionModal";
 
 interface ObjectionsSectionProps {
   variables: ScriptVariables;
   isPersonalized: boolean;
+  onJumpToScript?: () => void;
 }
 
 export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
   variables,
   isPersonalized,
+  onJumpToScript,
 }) => {
   const [activeTab, setActiveTab] = useState<string>("core");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -139,7 +141,7 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
           <Keyboard className="h-4 w-4 text-lime-600" />
           <span>Press</span>
           <kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-800 border border-slate-300">
-            1-4
+            1-9
           </kbd>
           <span>for instant card popup,</span>
           <kbd className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-bold text-slate-800 border border-slate-300">
@@ -274,6 +276,7 @@ export const ObjectionsSection: React.FC<ObjectionsSectionProps> = ({
           totalCount={filteredObjections.length}
           variables={variables}
           isPersonalized={isPersonalized}
+          onJumpToScript={onJumpToScript}
         />
       )}
     </section>

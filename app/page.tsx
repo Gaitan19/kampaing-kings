@@ -7,7 +7,8 @@ import { OpeningScript } from "./components/OpeningScript";
 import { ObjectionsSection } from "./components/ObjectionsSection";
 import { CallTipsGuide } from "./components/CallTipsGuide";
 import { SeoStructuredData } from "./components/SeoStructuredData";
-import { INITIAL_VARIABLES, ScriptVariables, ALL_OBJECTIONS } from "./data/scriptData";
+import { INITIAL_VARIABLES, ScriptVariables } from "./data/scriptData";
+import { ALL_OBJECTIONS } from "./data/objectionsData";
 import { ShieldCheck, HeartHandshake, CheckCircle } from "lucide-react";
 
 export default function Home() {
@@ -90,6 +91,7 @@ Hello Service Advisor, I have ${cName} on the line, can you please assist?`;
           <ObjectionsSection
             variables={variables}
             isPersonalized={isPersonalized}
+            onJumpToScript={handleJumpToScript}
           />
 
           {/* Section 3: Training Playbook & Psychology Tips */}
