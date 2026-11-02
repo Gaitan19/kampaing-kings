@@ -1,69 +1,130 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import { HeaderNav } from "./components/HeaderNav";
+import { CallerHud } from "./components/CallerHud";
+import { OpeningScript } from "./components/OpeningScript";
+import { ObjectionsSection } from "./components/ObjectionsSection";
+import { CallTipsGuide } from "./components/CallTipsGuide";
+import { SeoStructuredData } from "./components/SeoStructuredData";
+import { INITIAL_VARIABLES, ScriptVariables, ALL_OBJECTIONS } from "./data/scriptData";
+import { PhoneCall, ShieldCheck, Zap, HeartHandshake, CheckCircle } from "lucide-react";
 
 export default function Home() {
+  const [variables, setVariables] = useState<ScriptVariables>(INITIAL_VARIABLES);
+  const [isPersonalized, setIsPersonalized] = useState<boolean>(true);
+  const [fullScriptCopied, setFullScriptCopied] = useState<boolean>(false);
+
+  // Jump handlers
+  const handleJumpToScript = () => {
+    const el = document.getElementById("opening-script-section");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleJumpToObjections = () => {
+    const el = document.getElementById("objections-matrix-section");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleJumpToTips = () => {
+    const el = document.getElementById("agent-tips-section");
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Copy entire opening script
+  const handleCopyFullScript = () => {
+    const cName = isPersonalized ? variables.clientName : "(client's name)";
+    const aName = isPersonalized ? variables.agentName : "(your name)";
+    const mYear = isPersonalized ? variables.monthYear : "(month, year)";
+    const pAmt = isPersonalized ? variables.paymentAmount : "(payment amount)";
+
+    const fullScript = `Opening Script:
+Hi, ${cName} this is ${aName} with the Vehicle Services Group. We're calling about the vehicle you financed on ${mYear} with a monthly payment of ${pAmt}.
+
+Our records indicate you haven't activated your vehicle's extended warranty yet.
+I just need to verify is your vehicle still in good running condition?
+Perfect!
+
+I would just need to get you on with a Service Advisor to explain the details of your qualifications and review what it will cover, give me one second and I will introduce you. Okay? (Wait for customer approval to transfer)
+
+Hello Service Advisor, I have ${cName} on the line, can you please assist?`;
+
+    navigator.clipboard.writeText(fullScript);
+    setFullScriptCopied(true);
+    setTimeout(() => setFullScriptCopied(false), 2000);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <SeoStructuredData />
+
+      <div className="flex min-h-screen flex-col bg-slate-950 text-slate-100 antialiased selection:bg-lime-500 selection:text-slate-950">
+        {/* Navigation Bar */}
+        <HeaderNav
+          onJumpToScript={handleJumpToScript}
+          onJumpToObjections={handleJumpToObjections}
+          onJumpToTips={handleJumpToTips}
+          activeCount={ALL_OBJECTIONS.length}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 pb-16">
+          {/* Hero Banner / Agent Cockpit HUD */}
+          <CallerHud
+            variables={variables}
+            onVariablesChange={setVariables}
+            isPersonalized={isPersonalized}
+            onTogglePersonalized={setIsPersonalized}
+            onCopyFullScript={handleCopyFullScript}
+            fullScriptCopied={fullScriptCopied}
+          />
+
+          {/* Section 1: The Opening Script */}
+          <OpeningScript
+            variables={variables}
+            isPersonalized={isPersonalized}
+            onJumpToObjections={handleJumpToObjections}
+          />
+
+          {/* Section 2: Objections & Rebuttals Matrix with Interactive Details */}
+          <ObjectionsSection
+            variables={variables}
+            isPersonalized={isPersonalized}
+          />
+
+          {/* Section 3: Training Playbook & Psychology Tips */}
+          <CallTipsGuide />
+        </main>
+
+        {/* Professional Call Center Footer */}
+        <footer className="border-t border-slate-900 bg-slate-950/90 py-8 text-center text-xs text-slate-500">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-3">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-slate-400 font-semibold">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-lime-400" />
+                Vehicle Services Group Outreach Operations
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle className="h-4 w-4 text-lime-400" />
+                TCPA &amp; DNC Compliance Verified
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <HeartHandshake className="h-4 w-4 text-lime-400" />
+                Licensed Service Advisor Transfer Protocol
+              </span>
+            </div>
+            <p>
+              Internal Training &amp; Dialing Dashboard for Automotive Extended Warranty Telemarketing Campaigns.
+              All phone scripts conform to consumer protection guidelines.
+            </p>
+            <p className="text-[11px] text-slate-600">
+              Vehicle Services Group &copy; 2026. For authorized call center representatives only.
+            </p>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }

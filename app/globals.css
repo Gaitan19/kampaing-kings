@@ -1,26 +1,59 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #030712;
+  --foreground: #f8fafc;
+  --card-bg: #0b1329;
+  --accent-green: #84cc16;
+  --accent-green-dark: #65a30d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #030712;
+  color: #f1f5f9;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars for call center fast scrolling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Halftone and brush effect accents */
+.halftone-bg {
+  background-image: radial-gradient(#22c55e 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+}
+
+.brush-banner {
+  background: linear-gradient(90deg, #09090b 0%, #18181b 92%, transparent 100%);
+  position: relative;
+}
+
+.brush-banner::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: inherit;
+  clip-path: polygon(0 0, 100% 15%, 85% 50%, 100% 85%, 0 100%);
 }
