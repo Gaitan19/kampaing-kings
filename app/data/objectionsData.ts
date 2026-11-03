@@ -48,7 +48,7 @@ export interface ObjectionItem {
 export const CATEGORIES_META: Record<ObjectionCategory, ObjectionCategoryMeta> = {
   top6: {
     key: "top6",
-    label: "Top 6 - Most Frequent",
+    label: "Most Frequent",
     badgeColor: "bg-amber-500 text-slate-950",
     borderColor: "border-amber-400",
     textColor: "text-amber-700",
@@ -98,9 +98,9 @@ export const CATEGORIES_META: Record<ObjectionCategory, ObjectionCategoryMeta> =
   },
 };
 
-// Top 6 are ordered 1 to 6 first, followed by the rest
+// Most Frequent are ordered first (01 to 08), followed by the rest
 export const ALL_OBJECTIONS: ObjectionItem[] = [
-  // --- TOP 6 MOST FREQUENT ---
+  // --- MOST FREQUENT ---
   {
     id: "not-interested",
     number: "01",
@@ -291,11 +291,74 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
       },
     ],
   },
+  {
+    id: "purpose-of-call",
+    number: "07",
+    title: "PURPOSE OF THE CALL",
+    shortTitle: "PURPOSE OF THE CALL",
+    isTop6: true,
+    category: "top6",
+    categoryLabel: "Most Frequent",
+    icon: "Target",
+    colorScheme: {
+      bg: "bg-amber-50/70 hover:bg-amber-100/60",
+      border: "border-amber-400 hover:border-amber-500",
+      text: "text-amber-950",
+      badgeBg: "bg-amber-500",
+      badgeText: "text-slate-950",
+      pillBg: "bg-amber-100",
+      pillText: "text-amber-800",
+      accent: "#f59e0b",
+    },
+    goal: "Deliver a clear overview of the warranty extension and keep them on the line for the advisor.",
+    responses: [
+      {
+        id: 1,
+        text: "“This call is simply an opportunity to extend the warranty on your vehicle before any issues come up. Think of it as an extra layer of protection against unexpected breakdowns. If your vehicle is still running well, I’ll go ahead and connect you to the Service Advisor who’ll walk you through everything. Sounds good? Just stay on the line.”",
+      },
+      {
+        id: 2,
+        text: "“We’re reaching out to give you the chance to extend your vehicle’s warranty while it still qualifies. Major repairs can be expensive, and this coverage helps you avoid those surprise costs. If your vehicle’s running fine, I’ll get you over to the Service Advisor now so they can explain what’s available. Please stay in the line.”",
+      },
+    ],
+  },
+  {
+    id: "who-is-this",
+    number: "08",
+    title: "WHO IS THIS?",
+    shortTitle: "WHO IS THIS?",
+    isTop6: true,
+    category: "top6",
+    categoryLabel: "Most Frequent",
+    icon: "UserCheck",
+    colorScheme: {
+      bg: "bg-amber-50/70 hover:bg-amber-100/60",
+      border: "border-amber-400 hover:border-amber-500",
+      text: "text-amber-950",
+      badgeBg: "bg-amber-500",
+      badgeText: "text-slate-950",
+      pillBg: "bg-amber-100",
+      pillText: "text-amber-800",
+      accent: "#f59e0b",
+    },
+    goal: "State company name first, then explain our role paying mechanical breakdown bills.",
+    responses: [
+      {
+        id: 1,
+        contextNote: "The first rebuttal is always",
+        text: "“from the Vehicle Services Group”",
+      },
+      {
+        id: 2,
+        text: "“We’re the folks who help pay the bill when something major breaks. I’m just making sure you get the info before your eligibility changes.”",
+      },
+    ],
+  },
 
   // --- VEHICLE & RECORDS GROUP ---
   {
     id: "not-my-vehicle",
-    number: "07",
+    number: "09",
     title: "THAT’S NOT MY VEHICLE",
     isTop6: false,
     category: "vehicle",
@@ -329,7 +392,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
   },
   {
     id: "vehicle-info-wrong",
-    number: "08",
+    number: "10",
     title: "THE VEHICLE INFORMATION IS WRONG (PRICE, LOAN, DATE)",
     isTop6: false,
     category: "vehicle",
@@ -360,7 +423,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
   },
   {
     id: "dont-remember-vehicle-info",
-    number: "09",
+    number: "11",
     title: "I DON’T REMEMBER / KNOW IF THAT’S MY VEHICLE INFO",
     isTop6: false,
     category: "vehicle",
@@ -386,7 +449,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
   },
   {
     id: "vehicle-totaled-sold",
-    number: "10",
+    number: "12",
     title: "MY VEHICLE WAS TOTALED / I SOLD THE VEHICLE",
     isTop6: false,
     category: "vehicle",
@@ -416,7 +479,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
   },
   {
     id: "multiple-cars",
-    number: "11",
+    number: "13",
     title: "I HAVE MULTIPLE CARS",
     isTop6: false,
     category: "vehicle",
@@ -444,7 +507,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
   // --- TRUST & IDENTITY GROUP ---
   {
     id: "no-service-with-you",
-    number: "12",
+    number: "14",
     title: "I DON’T HAVE ANY SERVICE WITH YOU",
     isTop6: false,
     category: "trust",
@@ -473,39 +536,8 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
     ],
   },
   {
-    id: "who-is-this",
-    number: "13",
-    title: "WHO IS THIS?",
-    isTop6: false,
-    category: "trust",
-    categoryLabel: "Trust & Identity",
-    icon: "UserCheck",
-    colorScheme: {
-      bg: "bg-sky-50/70 hover:bg-sky-100/60",
-      border: "border-sky-300 hover:border-sky-500",
-      text: "text-sky-950",
-      badgeBg: "bg-sky-500",
-      badgeText: "text-slate-950",
-      pillBg: "bg-sky-100",
-      pillText: "text-sky-800",
-      accent: "#0ea5e9",
-    },
-    goal: "State company name first, then explain our role paying mechanical breakdown bills.",
-    responses: [
-      {
-        id: 1,
-        contextNote: "The first rebuttal is always",
-        text: "“from the Vehicle Services Group”",
-      },
-      {
-        id: 2,
-        text: "“We’re the folks who help pay the bill when something major breaks. I’m just making sure you get the info before your eligibility changes.”",
-      },
-    ],
-  },
-  {
     id: "where-are-you-located",
-    number: "14",
+    number: "15",
     title: "WHERE ARE YOU LOCATED?",
     isTop6: false,
     category: "trust",
@@ -530,36 +562,6 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
       {
         id: 2,
         text: "“We’re based in Texas but work nationwide. Wherever you are, your vehicle is covered coast to coast.”",
-      },
-    ],
-  },
-  {
-    id: "purpose-of-call",
-    number: "15",
-    title: "PURPOSE OF THE CALL",
-    isTop6: false,
-    category: "trust",
-    categoryLabel: "Trust & Identity",
-    icon: "Target",
-    colorScheme: {
-      bg: "bg-sky-50/70 hover:bg-sky-100/60",
-      border: "border-sky-300 hover:border-sky-500",
-      text: "text-sky-950",
-      badgeBg: "bg-sky-500",
-      badgeText: "text-slate-950",
-      pillBg: "bg-sky-100",
-      pillText: "text-sky-800",
-      accent: "#0ea5e9",
-    },
-    goal: "Deliver a clear overview of the warranty extension and keep them on the line for the advisor.",
-    responses: [
-      {
-        id: 1,
-        text: "“This call is simply an opportunity to extend the warranty on your vehicle before any issues come up. Think of it as an extra layer of protection against unexpected breakdowns. If your vehicle is still running well, I’ll go ahead and connect you to the Service Advisor who’ll walk you through everything. Sounds good? Just stay on the line.”",
-      },
-      {
-        id: 2,
-        text: "“We’re reaching out to give you the chance to extend your vehicle’s warranty while it still qualifies. Major repairs can be expensive, and this coverage helps you avoid those surprise costs. If your vehicle’s running fine, I’ll get you over to the Service Advisor now so they can explain what’s available. Please stay in the line.”",
       },
     ],
   },
@@ -712,6 +714,7 @@ export const ALL_OBJECTIONS: ObjectionItem[] = [
 ];
 
 export const TOP_6_OBJECTIONS = ALL_OBJECTIONS.filter((item) => item.isTop6);
+export const MOST_FREQUENT_OBJECTIONS = TOP_6_OBJECTIONS;
 export const OTHER_OBJECTIONS = ALL_OBJECTIONS.filter((item) => !item.isTop6);
 
 // Universal In-Call Holding Tips to show inside every modal and call area

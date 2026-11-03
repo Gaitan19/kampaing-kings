@@ -37,9 +37,9 @@ export default function Home() {
         return;
       }
 
-      // Quick numbers 1 to 6 to open Top 6 rebuttals
+      // Quick numbers 1 to 8 to open Most Frequent rebuttals
       const num = parseInt(e.key, 10);
-      if (!isNaN(num) && num >= 1 && num <= 6 && selectedObjectionIndex === null) {
+      if (!isNaN(num) && num >= 1 && num <= 8 && selectedObjectionIndex === null) {
         e.preventDefault();
         setSelectedObjectionIndex(num - 1);
         return;

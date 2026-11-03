@@ -78,7 +78,7 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-lime-400">
-                  {objection.isTop6 ? "🔥 Top 6 Most Frequent Rebuttal" : objection.categoryLabel}
+                  {objection.isTop6 ? "🔥 Most Frequent Rebuttal" : objection.categoryLabel}
                 </span>
                 <span className="rounded-full bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-300">
                   {currentIndex + 1} of {totalCount}

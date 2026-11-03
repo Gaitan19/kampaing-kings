@@ -93,7 +93,7 @@ export const RebuttalsSidebar: React.FC<RebuttalsSidebarProps> = ({
   }[] = [
     {
       category: "top6",
-      label: "🔥 TOP 6 - MOST FREQUENT",
+      label: "🔥 MOST FREQUENT",
       meta: CATEGORIES_META.top6,
       items: [],
     },
@@ -195,7 +195,7 @@ export const RebuttalsSidebar: React.FC<RebuttalsSidebarProps> = ({
                 : "bg-slate-800 text-amber-300 border-slate-700 hover:bg-slate-700"
             }`}
           >
-            Top 6 🔥
+            Most Frequent 🔥
           </button>
           <button
             onClick={() => handleCategoryClick("vehicle")}
