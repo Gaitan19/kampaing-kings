@@ -1,131 +1,142 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HeaderNav } from "./components/HeaderNav";
-import { CallerHud } from "./components/CallerHud";
 import { OpeningScript } from "./components/OpeningScript";
-import { ObjectionsSection } from "./components/ObjectionsSection";
-import { CallTipsGuide } from "./components/CallTipsGuide";
+import { RebuttalsSidebar } from "./components/RebuttalsSidebar";
+import { ObjectionModal } from "./components/ObjectionModal";
 import { SeoStructuredData } from "./components/SeoStructuredData";
-import { INITIAL_VARIABLES, ScriptVariables } from "./data/scriptData";
 import { ALL_OBJECTIONS } from "./data/objectionsData";
-import { ShieldCheck, HeartHandshake, CheckCircle } from "lucide-react";
+import { X } from "lucide-react";
 
 export default function Home() {
-  const [variables, setVariables] = useState<ScriptVariables>(INITIAL_VARIABLES);
-  const [isPersonalized, setIsPersonalized] = useState<boolean>(true);
-  const [fullScriptCopied, setFullScriptCopied] = useState<boolean>(false);
+  const [selectedObjectionIndex, setSelectedObjectionIndex] = useState<number | null>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
 
-  // Jump handlers
-  const handleJumpToScript = () => {
-    const el = document.getElementById("opening-script-section");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+  // Global Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger if user is typing in an input
+      if (
+        document.activeElement?.tagName === "INPUT" ||
+        document.activeElement?.tagName === "TEXTAREA"
+      ) {
+        if (e.key === "Escape") {
+          (document.activeElement as HTMLElement).blur();
+        }
+        return;
+      }
+
+      // Close modal on Escape
+      if (e.key === "Escape") {
+        if (selectedObjectionIndex !== null) {
+          setSelectedObjectionIndex(null);
+        } else if (isMobileSidebarOpen) {
+          setIsMobileSidebarOpen(false);
+        }
+        return;
+      }
+
+      // Quick numbers 1 to 6 to open Top 6 rebuttals
+      const num = parseInt(e.key, 10);
+      if (!isNaN(num) && num >= 1 && num <= 6 && selectedObjectionIndex === null) {
+        e.preventDefault();
+        setSelectedObjectionIndex(num - 1);
+        return;
+      }
+
+      // Arrow navigation inside modal
+      if (selectedObjectionIndex !== null) {
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          setSelectedObjectionIndex((selectedObjectionIndex + 1) % ALL_OBJECTIONS.length);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          setSelectedObjectionIndex(
+            (selectedObjectionIndex - 1 + ALL_OBJECTIONS.length) % ALL_OBJECTIONS.length
+          );
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedObjectionIndex, isMobileSidebarOpen]);
+
+  const handleSelectObjection = (index: number) => {
+    setSelectedObjectionIndex(index);
+    if (isMobileSidebarOpen) {
+      setIsMobileSidebarOpen(false);
+    }
   };
 
-  const handleJumpToObjections = () => {
-    const el = document.getElementById("objections-matrix-section");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleJumpToTips = () => {
-    const el = document.getElementById("agent-tips-section");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  // Copy entire opening script
-  const handleCopyFullScript = () => {
-    const cName = isPersonalized ? variables.clientName : "(client's name)";
-    const aName = isPersonalized ? variables.agentName : "(your name)";
-    const mYear = isPersonalized ? variables.monthYear : "(month, year)";
-    const pAmt = isPersonalized ? variables.paymentAmount : "(payment amount)";
-
-    const fullScript = `Opening Script:
-Hi, ${cName} this is ${aName} with the Vehicle Services Group. We're calling about the vehicle you financed on ${mYear} with a monthly payment of ${pAmt}.
-
-Our records indicate you haven't activated your vehicle's extended warranty yet.
-I just need to verify is your vehicle still in good running condition?
-Perfect!
-
-I would just need to get you on with a Service Advisor to explain the details of your qualifications and review what it will cover, give me one second and I will introduce you. Okay? (Wait for customer approval to transfer)
-
-Hello Service Advisor, I have ${cName} on the line, can you please assist?`;
-
-    navigator.clipboard.writeText(fullScript);
-    setFullScriptCopied(true);
-    setTimeout(() => setFullScriptCopied(false), 2000);
-  };
+  const selectedObjection =
+    selectedObjectionIndex !== null ? ALL_OBJECTIONS[selectedObjectionIndex] : null;
 
   return (
     <>
       <SeoStructuredData />
 
-      <div className="flex min-h-screen flex-col bg-slate-100 text-slate-900 antialiased selection:bg-lime-400 selection:text-slate-950">
-        {/* Navigation Bar */}
+      <div className="min-h-screen lg:h-screen lg:overflow-hidden flex flex-col bg-slate-100 text-slate-900 antialiased selection:bg-lime-400 selection:text-slate-950">
+        {/* Compact Navigation Bar */}
         <HeaderNav
-          onJumpToScript={handleJumpToScript}
-          onJumpToObjections={handleJumpToObjections}
-          onJumpToTips={handleJumpToTips}
-          activeCount={ALL_OBJECTIONS.length}
+          onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          totalRebuttals={ALL_OBJECTIONS.length}
         />
 
-        {/* Main Content Area */}
-        <main className="flex-1 pb-16 space-y-4">
-          {/* Hero Banner / Agent Cockpit HUD */}
-          <CallerHud
-            variables={variables}
-            onVariablesChange={setVariables}
-            isPersonalized={isPersonalized}
-            onTogglePersonalized={setIsPersonalized}
-            onCopyFullScript={handleCopyFullScript}
-            fullScriptCopied={fullScriptCopied}
-          />
+        {/* Main Agent Workspace: Split Screen layout maximizing screen utilization */}
+        <main className="flex-1 w-full px-2 sm:px-3 lg:px-4 py-2 lg:overflow-hidden flex flex-col">
+          <div className="flex-1 flex flex-col lg:flex-row gap-3 lg:gap-3.5 items-stretch lg:overflow-hidden">
+            {/* LEFT SIDEBAR: FIXED REBUTTALS LIST (Scrollable only inside its menu) */}
+            <div className="hidden lg:flex lg:flex-col lg:w-[480px] xl:w-[520px] 2xl:w-[540px] shrink-0 h-full overflow-hidden">
+              <RebuttalsSidebar
+                onSelectObjection={handleSelectObjection}
+                selectedIndex={selectedObjectionIndex}
+              />
+            </div>
 
-          {/* Section 1: The Opening Script */}
-          <OpeningScript
-            variables={variables}
-            isPersonalized={isPersonalized}
-            onJumpToObjections={handleJumpToObjections}
-          />
+            {/* Mobile Slide-over Drawer for Rebuttals */}
+            {isMobileSidebarOpen && (
+              <div
+                className="fixed inset-0 z-50 flex bg-slate-950/70 backdrop-blur-xs lg:hidden"
+                onClick={() => setIsMobileSidebarOpen(false)}
+              >
+                <div
+                  className="relative w-full max-w-md h-full bg-white shadow-2xl p-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <button
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                    className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-lg bg-slate-800 text-white"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                  <RebuttalsSidebar
+                    onSelectObjection={handleSelectObjection}
+                    selectedIndex={selectedObjectionIndex}
+                  />
+                </div>
+              </div>
+            )}
 
-          {/* Section 2: Objections & Rebuttals Matrix with Interactive Details */}
-          <ObjectionsSection
-            variables={variables}
-            isPersonalized={isPersonalized}
-            onJumpToScript={handleJumpToScript}
-          />
-
-          {/* Section 3: Training Playbook & Psychology Tips */}
-          <CallTipsGuide />
+            {/* RIGHT SIDE: OPENING SCRIPT (Fits 100% on screen without scrolling) */}
+            <div className="flex-1 w-full min-w-0 lg:h-full lg:overflow-hidden flex flex-col">
+              <OpeningScript />
+            </div>
+          </div>
         </main>
 
-        {/* Professional Call Center Footer */}
-        <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-600">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-3">
-            <div className="flex flex-wrap items-center justify-center gap-4 text-slate-700 font-semibold">
-              <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-lime-600" />
-                Vehicle Services Group Outreach Operations
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle className="h-4 w-4 text-lime-600" />
-                TCPA &amp; DNC Compliance Verified
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1.5">
-                <HeartHandshake className="h-4 w-4 text-lime-600" />
-                Licensed Service Advisor Transfer Protocol
-              </span>
-            </div>
-            <p>
-              Internal Training &amp; Dialing Dashboard for Automotive Extended Warranty Telemarketing Campaigns.
-              All phone scripts conform to consumer protection guidelines.
-            </p>
-            <p className="text-[11px] text-slate-400">
-              Vehicle Services Group &copy; 2026. For authorized call center representatives only.
-            </p>
-          </div>
-        </footer>
+        {/* Rebuttal Modal (Opened when clicking any Rebuttal in the Left Sidebar) */}
+        {selectedObjectionIndex !== null && (
+          <ObjectionModal
+            objection={selectedObjection}
+            onClose={() => setSelectedObjectionIndex(null)}
+            onSelectIndex={(newIdx) => setSelectedObjectionIndex(newIdx)}
+            currentIndex={selectedObjectionIndex}
+            totalCount={ALL_OBJECTIONS.length}
+          />
+        )}
       </div>
     </>
   );

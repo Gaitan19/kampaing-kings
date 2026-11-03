@@ -1,300 +1,173 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  PhoneCall,
-  CheckCircle2,
-  Copy,
-  Check,
-  Volume2,
-  ArrowRight,
-  Headphones,
-  Car,
-  AlertCircle,
-} from "lucide-react";
-import { ScriptVariables } from "../data/scriptData";
+import { Copy, Check, MessageSquare } from "lucide-react";
+import { FULL_OPENING_SCRIPT_TEXT } from "../data/scriptData";
 
-interface OpeningScriptProps {
-  variables: ScriptVariables;
-  isPersonalized: boolean;
-  onJumpToObjections: () => void;
-}
+export const OpeningScript: React.FC = () => {
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
-export const OpeningScript: React.FC<OpeningScriptProps> = ({
-  variables,
-  isPersonalized,
-  onJumpToObjections,
-}) => {
-  const [copiedSection, setCopiedSection] = useState<string | null>(null);
-
-  const copyToClipboard = (text: string, sectionId: string) => {
+  const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedSection(sectionId);
-    setTimeout(() => {
-      setCopiedSection(null);
-    }, 2000);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
-
-  // Helper to render variable or template token
-  const renderClientName = () => (
-    <span
-      className={`font-bold transition-colors ${
-        isPersonalized
-          ? "bg-lime-100 text-lime-900 px-1.5 py-0.5 rounded border border-lime-300"
-          : "text-amber-700 underline decoration-amber-400"
-      }`}
-    >
-      {isPersonalized ? variables.clientName || "(client's name)" : "(client's name)"}
-    </span>
-  );
-
-  const renderAgentName = () => (
-    <span
-      className={`font-bold transition-colors ${
-        isPersonalized
-          ? "bg-lime-100 text-lime-900 px-1.5 py-0.5 rounded border border-lime-300"
-          : "text-amber-700 underline decoration-amber-400"
-      }`}
-    >
-      {isPersonalized ? variables.agentName || "(your name)" : "(your name)"}
-    </span>
-  );
-
-  const renderMonthYear = () => (
-    <span
-      className={`font-bold transition-colors ${
-        isPersonalized
-          ? "bg-lime-100 text-lime-900 px-1.5 py-0.5 rounded border border-lime-300"
-          : "text-amber-700 underline decoration-amber-400"
-      }`}
-    >
-      {isPersonalized ? variables.monthYear || "(month, year)" : "(month, year)"}
-    </span>
-  );
-
-  const renderPaymentAmount = () => (
-    <span
-      className={`font-bold transition-colors ${
-        isPersonalized
-          ? "bg-lime-100 text-lime-900 px-1.5 py-0.5 rounded border border-lime-300"
-          : "text-amber-700 underline decoration-amber-400"
-      }`}
-    >
-      {isPersonalized
-        ? variables.paymentAmount || "(payment amount)"
-        : "(payment amount)"}
-    </span>
-  );
 
   return (
     <section
       id="opening-script-section"
-      aria-label="Opening Outbound Script"
-      className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
+      aria-label="Opening Script"
+      className="relative overflow-hidden rounded-2xl border-2 border-slate-300 bg-white p-3.5 sm:p-4 lg:p-5 shadow-md flex flex-col"
     >
-      <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-12 shadow-md">
-        {/* Top Bar with Badge & Call Out Controls */}
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-5">
-          <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-600">
-              <PhoneCall className="h-4 w-4" />
-            </span>
-            <span className="text-xs font-black uppercase tracking-wider text-red-600">
-              Phase 1: Initial Hook &amp; Transfer Permission
+      {/* Script Header */}
+      <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3 shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="flex h-2.5 w-2.5 rounded-full bg-slate-900" />
+          <h1 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight uppercase">
+            Opening Script
+          </h1>
+        </div>
+
+        <button
+          onClick={() => handleCopy(FULL_OPENING_SCRIPT_TEXT, "full-script")}
+          className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-700 hover:border-slate-400 hover:bg-slate-100 transition-all shadow-2xs"
+          title="Copy entire script to clipboard"
+        >
+          {copiedId === "full-script" ? (
+            <>
+              <Check className="h-3.5 w-3.5 text-slate-900" />
+              <span className="text-slate-950 font-extrabold text-[11px]">Copied!</span>
+            </>
+          ) : (
+            <>
+              <Copy className="h-3.5 w-3.5 text-slate-500" />
+              <span className="text-[11px]">Copy Script</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Script Flow Blocks: Natural close spacing for effortless continuous reading */}
+      <div className="space-y-2.5 sm:space-y-3">
+        {/* STEP 1: GREETING & COURTESY CHECK */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-2.5 transition-all hover:bg-slate-50 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Step 1 • Initial Hook &amp; Greeting
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700 border border-slate-200">
-              <Volume2 className="h-3.5 w-3.5 text-lime-600" />
-              <span>Pace: Confident &amp; Friendly</span>
-            </div>
+          <p className="text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            Hi,{" "}
+            <span className="font-bold text-amber-700 underline decoration-amber-400">
+              [Client&apos;s Name]
+            </span>
+            , this is{" "}
+            <span className="font-bold text-amber-700 underline decoration-amber-400">
+              (your name)
+            </span>{" "}
+            with the <strong className="font-bold text-slate-900">Vehicle Services Group</strong>.
+          </p>
 
-            <button
-              onClick={onJumpToObjections}
-              className="flex items-center gap-1.5 rounded-full border border-lime-500/50 bg-lime-50 px-3.5 py-1 text-xs font-bold text-lime-800 hover:bg-lime-100 transition-all shadow-2xs"
-            >
-              <span>Customer hesitating?</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </button>
+          <p className="mt-1.5 text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            <strong className="font-bold text-slate-900">How are you doing today?</strong>{" "}
+            <span className="font-bold text-amber-700 italic text-xs sm:text-sm">
+              (Wait for customer response)
+            </span>
+          </p>
+
+          {/* Sub-card: If customer asks back */}
+          <div className="mt-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-slate-900 flex items-center gap-2">
+            <MessageSquare className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+            <span className="text-xs sm:text-[13px] text-slate-900 leading-snug">
+              <span className="font-bold text-amber-700">
+                [If they ask &quot;How are you?&quot;]:
+              </span>{" "}
+              <span className="font-semibold text-slate-900">
+                &ldquo;- As long as we&apos;re healthy and able to provide for our families, I think we&apos;re doing just fine.&rdquo;
+              </span>
+            </span>
           </div>
         </div>
 
-        {/* Central Card Title matching Image 1 exact typography */}
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-red-600 tracking-tight">
-            Opening Script
-          </h2>
-          <p className="mt-2 text-xs sm:text-sm font-medium text-slate-500">
-            Read clearly with relaxed authority. Do not pause between your name and company name.
+        {/* STEP 2: FINANCE & VEHICLE VERIFICATION */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-2.5 transition-all hover:bg-slate-50 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Step 2 • Finance Verification
+            </span>
+          </div>
+
+          <p className="text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            We&apos;re calling about the vehicle you financed on{" "}
+            <span className="font-bold text-amber-700 underline decoration-amber-400">
+              (month, year)
+            </span>
+            , looks like you are paying{" "}
+            <span className="font-bold text-amber-700 underline decoration-amber-400">
+              (Monthlies)
+            </span>{" "}
+            correct?{" "}
+            <span className="font-bold text-amber-700 italic text-xs sm:text-sm">
+              (Wait for customer confirmation)
+            </span>
           </p>
         </div>
 
-        {/* The Verbatim Script Paragraphs matching Image 1 layout */}
-        <div className="mx-auto max-w-4xl space-y-8 text-center text-slate-800">
-          {/* Paragraph 1: Greeting & Lead Recognition */}
-          <div className="group relative rounded-2xl border border-transparent bg-slate-50/70 p-5 sm:p-6 transition-all hover:border-slate-200 hover:bg-slate-50">
-            <p className="text-lg sm:text-2xl font-normal leading-relaxed text-slate-800">
-              Hi, {renderClientName()} this is {renderAgentName()} with the{" "}
-              <strong className="text-slate-950 font-black">
-                Vehicle Services Group
-              </strong>
-              <br className="hidden sm:inline" />
-              {" "}We&apos;re calling about the vehicle you financed on{" "}
-              {renderMonthYear()} with a monthly payment of{" "}
-              {renderPaymentAmount()}.
-            </p>
-
-            <button
-              onClick={() =>
-                copyToClipboard(
-                  `Hi, ${
-                    isPersonalized ? variables.clientName : "(client's name)"
-                  } this is ${
-                    isPersonalized ? variables.agentName : "(your name)"
-                  } with the Vehicle Services Group. We're calling about the vehicle you financed on ${
-                    isPersonalized ? variables.monthYear : "(month, year)"
-                  } with a monthly payment of ${
-                    isPersonalized ? variables.paymentAmount : "(payment amount)"
-                  }.`,
-                  "step-1"
-                )
-              }
-              className="mt-3 inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 shadow-2xs"
-              title="Copy line"
-            >
-              {copiedSection === "step-1" ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-lime-600" />
-                  <span className="text-lime-700">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Copy greeting</span>
-                </>
-              )}
-            </button>
+        {/* STEP 3: RUNNING CONDITION CHECK */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-2.5 transition-all hover:bg-slate-50 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Step 3 • Condition Check
+            </span>
           </div>
 
-          {/* Paragraph 2: Warranty Notice & Condition Check */}
-          <div className="group relative rounded-2xl border border-transparent bg-slate-50/70 p-5 sm:p-6 transition-all hover:border-slate-200 hover:bg-slate-50">
-            <p className="text-lg sm:text-2xl font-normal leading-relaxed text-slate-800">
-              Our records indicate you haven&apos;t activated your vehicle&apos;s extended warranty yet.
-            </p>
-            <p className="mt-3 text-lg sm:text-2xl font-normal leading-relaxed text-slate-800">
-              I just need to verify is your vehicle still in good running condition?
-            </p>
-            <p className="mt-3 text-xl sm:text-2xl font-extrabold text-lime-600">
-              Perfect!
-            </p>
+          <p className="text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            So, how&apos;s your vehicle so far? Still running good?{" "}
+            <strong className="font-bold text-slate-900">Perfect!</strong>
+          </p>
+        </div>
 
-            <button
-              onClick={() =>
-                copyToClipboard(
-                  "Our records indicate you haven't activated your vehicle's extended warranty yet. I just need to verify is your vehicle still in good running condition? Perfect!",
-                  "step-2"
-                )
-              }
-              className="mt-3 inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 shadow-2xs"
-              title="Copy line"
-            >
-              {copiedSection === "step-2" ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-lime-600" />
-                  <span className="text-lime-700">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Copy question</span>
-                </>
-              )}
-            </button>
+        {/* STEP 4: EXTENDED WARRANTY NOTICE & TRANSFER PERMISSION */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-2.5 transition-all hover:bg-slate-50 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Step 4 • Transfer Bridge &amp; Approval
+            </span>
           </div>
 
-          {/* Paragraph 3: Transfer Bridge to Service Advisor */}
-          <div className="group relative rounded-2xl border border-amber-200 bg-amber-50/40 p-5 sm:p-6 transition-all hover:bg-amber-50/70">
-            <p className="text-lg sm:text-2xl font-normal leading-relaxed text-slate-800">
-              I would just need to get you on with a{" "}
-              <strong className="text-amber-600 font-extrabold">
-                Service Advisor
-              </strong>{" "}
-              to explain the details of your qualifications and rewiew what it will cover,
-              give me one second and I will introduce you.
-              <br />
-              <span className="font-extrabold text-slate-950">
-                Okay?
-              </span>{" "}
-              <span className="text-slate-500 font-semibold text-base sm:text-lg">
-                (Wait for customer approval to transfer)
-              </span>
-            </p>
+          <p className="text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            Our records show you haven&apos;t activated your{" "}
+            <strong className="font-bold text-slate-900">Vehicle&apos;s Extended Warranty</strong>.
+            So I have your <strong className="font-bold text-slate-900">Service Advisor</strong> on
+            the line to provide you with some brief details of your qualifications and what it will
+            cover.{" "}
+            <strong className="font-bold text-slate-900">Okay?</strong>{" "}
+            <span className="font-bold text-amber-700 italic text-xs sm:text-sm">
+              (Wait for customer approval to transfer)
+            </span>
+          </p>
+        </div>
 
-            <button
-              onClick={() =>
-                copyToClipboard(
-                  "I would just need to get you on with a Service Advisor to explain the details of your qualifications and review what it will cover, give me one second and I will introduce you. Okay?",
-                  "step-3"
-                )
-              }
-              className="mt-3 inline-flex items-center gap-1 rounded-lg border border-amber-300 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs"
-              title="Copy line"
-            >
-              {copiedSection === "step-3" ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-lime-600" />
-                  <span className="text-lime-700">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5 text-slate-400" />
-                  <span>Copy transfer bridge</span>
-                </>
-              )}
-            </button>
+        {/* STEP 5: WARM HAND-OFF TO SERVICE ADVISOR */}
+        <div className="rounded-xl border border-slate-200 bg-slate-50/80 px-3.5 py-2.5 transition-all hover:bg-slate-50 shadow-2xs">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Step 5 • Warm Introduction to Advisor
+            </span>
           </div>
 
-          {/* Paragraph 4: Introduction to Service Advisor */}
-          <div className="group relative rounded-2xl border-2 border-lime-500/60 bg-lime-50/50 p-5 sm:p-6 shadow-sm">
-            <p className="text-xl sm:text-3xl font-bold leading-relaxed text-slate-950">
-              Hello{" "}
-              <span className="text-amber-600 font-black">
-                Service Advisor
-              </span>
-              , I have {renderClientName()} on the line, can you please assist?
-            </p>
+          <p className="text-base sm:text-[17px] font-normal leading-snug text-slate-900">
+            &ldquo;Hello Service Advisor, I have{" "}
+            <span className="font-bold text-amber-700 underline decoration-amber-400">
+              (client&apos;s name)
+            </span>{" "}
+            on the line, can you please assist?&rdquo;
+          </p>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-              <button
-                onClick={() =>
-                  copyToClipboard(
-                    `Hello Service Advisor, I have ${
-                      isPersonalized ? variables.clientName : "(client's name)"
-                    } on the line, can you please assist?`,
-                    "step-4"
-                  )
-                }
-                className="inline-flex items-center gap-1 rounded-lg border border-lime-400 bg-lime-500 px-3 py-1.5 text-xs font-black text-slate-950 shadow-xs hover:bg-lime-400"
-                title="Copy line"
-              >
-                {copiedSection === "step-4" ? (
-                  <>
-                    <Check className="h-3.5 w-3.5" />
-                    <span>Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-3.5 w-3.5" />
-                    <span>Copy warm introduction</span>
-                  </>
-                )}
-              </button>
-              <span className="text-xs font-semibold text-slate-500">
-                (Hold until advisor acknowledges and greets customer)
-              </span>
-            </div>
-          </div>
+          <p className="mt-1 text-xs font-bold text-amber-700 italic">
+            (Hold on line until advisor acknowledges and greets customer)
+          </p>
         </div>
       </div>
     </section>

@@ -53,3 +53,20 @@ body {
   background: inherit;
   clip-path: polygon(0 0, 100% 12%, 80% 50%, 100% 88%, 0 100%);
 }
+
+/* Hide Next.js dev indicator */
+nextjs-portal,
+#__next-build-watcher,
+[data-nextjs-dev-tools-button],
+[data-nextjs-toast] {
+  display: none !important;
+}
+
+/* Ensure no page scroll on laptops and monitors (desktop screens) */
+@media (min-width: 1024px) {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+}
