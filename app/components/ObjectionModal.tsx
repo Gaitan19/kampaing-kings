@@ -9,7 +9,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Lightbulb,
-  PhoneCall,
 } from "lucide-react";
 import { ObjectionItem, UNIVERSAL_HOLDING_TIPS } from "../data/objectionsData";
 
@@ -38,16 +37,6 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
     navigator.clipboard.writeText(text);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
-  };
-
-  const handleBackToScript = () => {
-    onClose();
-    if (onReturnToScript) {
-      onReturnToScript();
-    } else {
-      const el = document.getElementById("opening-script-section");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
@@ -95,15 +84,6 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
 
           {/* Header Controls */}
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleBackToScript}
-              className="hidden sm:flex items-center gap-1.5 rounded-xl border border-red-500/40 bg-red-500/20 px-3 py-1.5 text-xs font-bold text-red-200 hover:bg-red-500 hover:text-white transition-all mr-1"
-              title="Return to Opening Script"
-            >
-              <PhoneCall className="h-3.5 w-3.5" />
-              <span>Opening Script</span>
-            </button>
-
             <button
               onClick={() => onSelectIndex((currentIndex - 1 + totalCount) % totalCount)}
               className="flex h-9 w-9 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-800 text-zinc-200 hover:border-lime-400 hover:bg-zinc-700 hover:text-white transition-all"
@@ -254,16 +234,8 @@ export const ObjectionModal: React.FC<ObjectionModalProps> = ({
 
           <div className="flex items-center gap-2.5 sm:gap-3">
             <button
-              onClick={handleBackToScript}
-              className="flex items-center gap-1.5 rounded-xl border border-red-300 bg-red-50 px-4 py-2 text-xs font-bold text-red-700 hover:border-red-400 hover:bg-red-100 transition-all shadow-2xs"
-            >
-              <PhoneCall className="h-3.5 w-3.5 text-red-600" />
-              <span>Back to Opening Script</span>
-            </button>
-
-            <button
               onClick={onClose}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-all shadow-2xs"
+              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-all shadow-2xs cursor-pointer"
             >
               Close
             </button>

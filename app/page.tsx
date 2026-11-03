@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { HeaderNav } from "./components/HeaderNav";
-import { OpeningScript } from "./components/OpeningScript";
-import { RebuttalsSidebar } from "./components/RebuttalsSidebar";
+import { RebuttalsNavbar } from "./components/RebuttalsNavbar";
+import { RebuttalsGrid } from "./components/RebuttalsGrid";
 import { ObjectionModal } from "./components/ObjectionModal";
 import { SeoStructuredData } from "./components/SeoStructuredData";
 import { ALL_OBJECTIONS } from "./data/objectionsData";
-import { X } from "lucide-react";
 
 export default function Home() {
   const [selectedObjectionIndex, setSelectedObjectionIndex] = useState<number | null>(null);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
 
   // Global Keyboard shortcuts
   useEffect(() => {
@@ -31,8 +29,6 @@ export default function Home() {
       if (e.key === "Escape") {
         if (selectedObjectionIndex !== null) {
           setSelectedObjectionIndex(null);
-        } else if (isMobileSidebarOpen) {
-          setIsMobileSidebarOpen(false);
         }
         return;
       }
@@ -61,14 +57,17 @@ export default function Home() {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedObjectionIndex, isMobileSidebarOpen]);
+  }, [selectedObjectionIndex]);
 
-  const handleSelectObjection = (index: number) => {
-    setSelectedObjectionIndex(index);
-    if (isMobileSidebarOpen) {
-      setIsMobileSidebarOpen(false);
-    }
-  };
+  const allItemsWithIndex = ALL_OBJECTIONS.map((item, originalIndex) => ({
+    item,
+    originalIndex,
+  }));
+
+  const filteredItems =
+    activeCategory === "all"
+      ? allItemsWithIndex
+      : allItemsWithIndex.filter(({ item }) => item.category === activeCategory);
 
   const selectedObjection =
     selectedObjectionIndex !== null ? ALL_OBJECTIONS[selectedObjectionIndex] : null;
@@ -78,56 +77,25 @@ export default function Home() {
       <SeoStructuredData />
 
       <div className="min-h-screen lg:h-screen lg:overflow-hidden flex flex-col bg-slate-100 text-slate-900 antialiased selection:bg-lime-400 selection:text-slate-950">
-        {/* Compact Navigation Bar */}
-        <HeaderNav
-          onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-          isMobileSidebarOpen={isMobileSidebarOpen}
-          totalRebuttals={ALL_OBJECTIONS.length}
+        {/* Rebuttals Quick Menu Top Navbar */}
+        <RebuttalsNavbar
+          activeCategory={activeCategory}
+          onSelectCategory={(catKey) => setActiveCategory(catKey)}
+          totalCount={ALL_OBJECTIONS.length}
+          filteredCount={filteredItems.length}
         />
 
-        {/* Main Agent Workspace: Split Screen layout maximizing screen utilization */}
-        <main className="flex-1 w-full px-2 sm:px-3 lg:px-4 py-2 lg:overflow-hidden flex flex-col">
-          <div className="flex-1 flex flex-col lg:flex-row gap-3 lg:gap-3.5 items-stretch lg:overflow-hidden">
-            {/* LEFT SIDEBAR: FIXED REBUTTALS LIST (Scrollable only inside its menu) */}
-            <div className="hidden lg:flex lg:flex-col lg:w-[480px] xl:w-[520px] 2xl:w-[540px] shrink-0 h-full overflow-hidden">
-              <RebuttalsSidebar
-                onSelectObjection={handleSelectObjection}
-                selectedIndex={selectedObjectionIndex}
-              />
-            </div>
-
-            {/* Mobile Slide-over Drawer for Rebuttals */}
-            {isMobileSidebarOpen && (
-              <div
-                className="fixed inset-0 z-50 flex bg-slate-950/70 backdrop-blur-xs lg:hidden"
-                onClick={() => setIsMobileSidebarOpen(false)}
-              >
-                <div
-                  className="relative w-full max-w-md h-full bg-white shadow-2xl p-2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    onClick={() => setIsMobileSidebarOpen(false)}
-                    className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-lg bg-slate-800 text-white"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                  <RebuttalsSidebar
-                    onSelectObjection={handleSelectObjection}
-                    selectedIndex={selectedObjectionIndex}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* RIGHT SIDE: OPENING SCRIPT (Fits 100% on screen without scrolling) */}
-            <div className="flex-1 w-full min-w-0 lg:h-full lg:overflow-hidden flex flex-col">
-              <OpeningScript />
-            </div>
-          </div>
+        {/* Main Agent Workspace: Grid view on laptop/desktop (no-scroll 4x5), Vertical list on mobile */}
+        <main className="flex-1 w-full p-2 sm:p-2.5 lg:p-3 overflow-y-auto lg:overflow-hidden flex flex-col min-h-0">
+          <RebuttalsGrid
+            items={filteredItems}
+            onSelectObjection={(origIdx) => setSelectedObjectionIndex(origIdx)}
+            selectedIndex={selectedObjectionIndex}
+            activeCategory={activeCategory}
+          />
         </main>
 
-        {/* Rebuttal Modal (Opened when clicking any Rebuttal in the Left Sidebar) */}
+        {/* Rebuttal Modal (Opened when clicking any card in the Grid or via keys 1-8) */}
         {selectedObjectionIndex !== null && (
           <ObjectionModal
             objection={selectedObjection}
